@@ -9,14 +9,25 @@ configuration:
 environment:
   matrix:
     - GENERATOR: "Visual Studio 15 2017"
+      BUILD_SHARED_LIBS: "ON"
+      SDL_SHARED: "ON"
+      SDL_STATIC: "OFF"
+    - GENERATOR: "Visual Studio 15 2017"
+      BUILD_SHARED_LIBS: "OFF"
+      SDL_SHARED: "OFF"
+      SDL_STATIC: "ON"
     - GENERATOR: "Visual Studio 15 2017 Win64"
-
-#install:
-#  - git submodule update --init --recursive
+      BUILD_SHARED_LIBS: "ON"
+      SDL_SHARED: "ON"
+      SDL_STATIC: "OFF"
+    - GENERATOR: "Visual Studio 15 2017 Win64"
+      BUILD_SHARED_LIBS: "OFF"
+      SDL_SHARED: "OFF"
+      SDL_STATIC: "ON"
 
 build_script:
   - ps: mkdir build
   - ps: cd build
-  - cmake "-G%GENERATOR%" "-DCMAKE_BUILD_TYPE=%CONFIGURATION%" ..
-  - cmake --build .
+  - cmake "-G%GENERATOR%" "-DCMAKE_BUILD_TYPE=%CONFIGURATION%" "-DBUILD_SHARED_LIBS=%BUILD_SHARED_LIBS%" "-DSDL_SHARED=%SDL_SHARED%" "-DSDL_STATIC=%SDL_STATIC%" ..
+  - cmake --build . --config "%CONFIGURATION%"
   
